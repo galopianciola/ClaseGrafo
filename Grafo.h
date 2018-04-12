@@ -55,17 +55,17 @@ public:
 	void agregar_vertice(int vertice);
 
 	// POST CONDICION: Para todo vértice v != vertice: !existeArco(v, vertice) && !existeArco(vertice, v)
-	void eliminar_vertice(int vertice);
+	void eliminar_vertice(int vertice); //
 
 	// PRE CONDICION: existeArco(origen, destino)
-	void modificar_costo_arco(int origen, int destino, const C & costo);
+	void modificar_costo_arco(int origen, int destino, const C & costo); //
 
 	// PRE CONDICION: existeVertice(origen) && existeVertice(destino)
 	// POST CONDICION: existeArco(origen, destino)
 	void agregar_arco(int origen, int destino, const C & costo);
 
 	// POST CONDICION: !existeArco(origen, destino)
-	void eliminar_arco(int origen, int destino);
+	void eliminar_arco(int origen, int destino); //
 
 	void vaciar(); //
 
@@ -235,11 +235,9 @@ template <typename C> void Grafo<C>::devolver_adyacentes(int origen, list<Arco> 
 }
 
 template <typename C> void Grafo<C>::agregar_vertice(int vertice)
-{   typename map<int,map<int,C> >::const_iterator it = grafo.begin();;
+{
 
-    if (!existe_vertice(vertice)){
-        //grafo.insert(it, std::pair<int,map<int,C> >(vertice,(1,1)));
-    }
+
 }
 
 template <typename C> void Grafo<C>::eliminar_vertice(int vertice)
@@ -272,9 +270,9 @@ template <typename C> void Grafo<C>::modificar_costo_arco(int origen, int destin
 
 template <typename C> void Grafo<C>::agregar_arco(int origen, int destino, const C & costo)
 {
-    if (existe_arco(origen,destino)){
+
 }
-}
+
 
 template <typename C> void Grafo<C>::eliminar_arco(int origen, int destino)
 {
