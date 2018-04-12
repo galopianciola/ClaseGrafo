@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1502873520 source:c:\users\dell\documents\ingeniería de sistemas (uncpba)\2°\analisis y diseño de algoritmos ii\main.cpp
+	"Grafo.h"
+	"iostream"
+
+1523487751 c:\users\dell\documents\ingeniería de sistemas (uncpba)\2°\analisis y diseño de algoritmos ii\grafo.h
+	<list>
+	<map>
+
