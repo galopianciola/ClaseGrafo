@@ -172,7 +172,7 @@ template <typename C> bool Grafo<C>::existe_arco(int origen, int destino) const
 
         it = itO->second.find(destino);
 
-        if (*it != itO->second.end())
+        if (it != itO->second.end())
             return true;
 
     }
@@ -235,29 +235,64 @@ template <typename C> void Grafo<C>::devolver_adyacentes(int origen, list<Arco> 
 }
 
 template <typename C> void Grafo<C>::agregar_vertice(int vertice)
-{
+{   typename map<int,map<int,C> >::const_iterator it = grafo.begin();;
 
+    if (!existe_vertice(vertice)){
+        //grafo.insert(it, std::pair<int,map<int,C> >(vertice,(1,1)));
+    }
 }
 
 template <typename C> void Grafo<C>::eliminar_vertice(int vertice)
 {
+    typename map<int,map<int,C> >::const_iterator it;
+    if (existe_vertice(vertice)){
+        it=grafo.find(vertice);
+        grafo.erase(it);
+    }
 
 }
 
 template <typename C> void Grafo<C>::modificar_costo_arco(int origen, int destino, const C & costo)
 {
+    typename map<int,map<int,C> >::const_iterator itO;
+
+    if (existe_arco(origen,destino)){
+
+        itO=grafo.find(origen);
+
+        typename map<int,C>::const_iterator it;
+
+        it = itO->second.find(destino);
+
+        it->second = costo;
+
+    }
 
 }
 
 template <typename C> void Grafo<C>::agregar_arco(int origen, int destino, const C & costo)
 {
-
+    if (existe_arco(origen,destino)){
+}
 }
 
 template <typename C> void Grafo<C>::eliminar_arco(int origen, int destino)
 {
+    typename map<int,map<int,C> >::const_iterator itO;
+    if (existe_arco(origen,destino)){
+
+        itO=grafo.find(origen);
+
+        typename map<int,C>::const_iterator it;
+
+        it = itO->second.find(destino);
+
+        grafo.erase(it);
+    }
 
 }
+
+
 
 template <typename C> void Grafo<C>::vaciar()
 {
