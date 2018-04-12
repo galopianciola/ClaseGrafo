@@ -3,6 +3,8 @@
 
 #include <list>
 #include <map>
+#include <set>
+#include<iostream>
 
 using namespace std;
 
@@ -52,7 +54,7 @@ public:
 
 	void devolver_adyacentes(int origen, list<Arco> & adyacentes) const; //
 
-	void agregar_vertice(int vertice);
+	void agregar_vertice(int vertice); //
 
 	// POST CONDICION: Para todo vértice v != vertice: !existeArco(v, vertice) && !existeArco(vertice, v)
 	void eliminar_vertice(int vertice); //
@@ -66,6 +68,8 @@ public:
 
 	// POST CONDICION: !existeArco(origen, destino)
 	void eliminar_arco(int origen, int destino); //
+
+	void mostrarGrafo(Grafo<C> G);
 
 	void vaciar(); //
 
@@ -206,10 +210,11 @@ template <typename C> const C & Grafo<C>::costo_arco(int origen, int destino) co
 template <typename C> void Grafo<C>::devolver_vertices(list<int> & vertices) const
 {
 
-    typename map<int,map<int,C> >::iterator it;
+    typename map<int,map<int,C> >::const_iterator it = grafo.begin();
 
     while (it != grafo.end()){
         vertices.push_back(it->first);
+        it++;
     }
 
 }
@@ -237,6 +242,11 @@ template <typename C> void Grafo<C>::devolver_adyacentes(int origen, list<Arco> 
 template <typename C> void Grafo<C>::agregar_vertice(int vertice)
 {
 
+    if (grafo.find(vertice) == grafo.end()) //Si no existe ya el vertice
+    {
+        map<int, C> adyacentes;
+        grafo[vertice] = adyacentes; // DUDA[]
+    }
 
 }
 
@@ -271,6 +281,14 @@ template <typename C> void Grafo<C>::modificar_costo_arco(int origen, int destin
 template <typename C> void Grafo<C>::agregar_arco(int origen, int destino, const C & costo)
 {
 
+    typename map<int,map<int,C> >::iterator itO;
+
+    if (existe_vertice(origen)){
+        itO = grafo.find(origen);
+        if (existe_arco(origen,destino) != true)
+            itO->second[destino]=costo;
+    }
+
 }
 
 
@@ -290,11 +308,33 @@ template <typename C> void Grafo<C>::eliminar_arco(int origen, int destino)
 
 }
 
+template <typename C> void Grafo<C>::mostrarGrafo(Grafo<C> G)
+{
+    list<int> Vertices;
+    G.devolver_vertices(Vertices);
+    list<int>::const_iterator It=Vertices.begin();
+    while(It != Vertices.end())
+    {
+        list<int> Adyacentes;
+        list<int>::const_iterator ItA ;
+        G.devolver_adyacentes(*It, Adyacentes);
+        ItA= Adyacentes.begin();
+        cout << *It << " - > "<<endl;
+        while (ItA != Adyacentes.end())
+        {
+            cout << *ItA << " ";
+            ItA++;
+        }
+        It++;
+        cout<<endl;
+    }
+    cout << endl;
+}
 
 
 template <typename C> void Grafo<C>::vaciar()
 {
-    this->grafo.erase();
+    this->grafo.clear();
 }
 
 #endif /* GRAFO_H_ */
