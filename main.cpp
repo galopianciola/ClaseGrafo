@@ -31,33 +31,79 @@ template <typename C> void DFS_forest(const Grafo<C> & grafo, int fuente)
     list<int> vertices;
     grafo.devolver_vertices(vertices);
 
-     set<int> visitados;
+    cout<<"Lista de vertices del grafo:"<<endl;
 
-    for (list<int>::iterator it=vertices.begin(); it != vertices.end(); ++it){
-        if (visitados.find(fuente)==visitados.end()){ //Si el vertice no esta visitado
-            DFS_visit(grafo,fuente,visitados);
-        }
+    list<int>::iterator itA=vertices.begin();
 
+    while (itA != vertices.end()){
+        cout<<*itA<<" ";
+        itA++;
     }
 
+    cout<<" "<<endl;
+    cout<<"#############################################"<<endl;
+    cout<<" "<<endl;
+
+    set<int> visitados;
+
+    list<int>::iterator it=vertices.begin();
+
+    list<int> recorrido;
+
+    cout<<"------------"<<endl;
+    cout<<endl;
+
+    while (it != vertices.end()){
+        if (visitados.find(fuente)==visitados.end()){ //Si el vertice no esta visitado
+            DFS_visit(grafo,fuente,visitados,recorrido);
+        }
+        it++;
+    }
+
+    cout<<"Recorrido total DFS: "<<endl;
+    list<int>::iterator itR=recorrido.begin();
+    while (itR != recorrido.end()){
+        cout<<*itR<<" ";
+        itR++;
+    }
+
+    cout<<" "<<endl;
+    cout<<" "<<endl;
+    cout<<"#############################################"<<endl;
+    cout<<" "<<endl;
 }
 
-template <typename C> void DFS_visit(const Grafo<C> & grafo, int vertice, set<int> & visitados)
+template <typename C> void DFS_visit(const Grafo<C> & grafo, int vertice, set<int> & visitados, list<int> & recorrido)
 {
     visitados.insert(vertice); //Marco como visitado
 
-    cout<<vertice<<endl;
+    cout<<"Vertice actual: "<<vertice<<endl;
+    recorrido.push_back(vertice);
 
     list<typename Grafo<C>::Arco> adyacentes;
-    grafo.devolver_adyacentes(vertice,adyacentes); //Obtengo adyacentes al vertice
 
-    for (typename list<typename Grafo<C>::Arco>::iterator it=adyacentes.begin(); it != adyacentes.end(); ++it){ //Para todos sus adyacentes
+    grafo.devolver_adyacentes(vertice,adyacentes); //Obtengo adyacentes al vertice (ACA SE ROMPE)
 
+    typename list<typename Grafo<C>::Arco>::iterator itA=adyacentes.begin();
 
+    cout<<"Lista de adyacentes a "<<vertice<<": ";
+    while (itA != adyacentes.end()){
+        cout<<(*itA).devolver_adyacente()<<" ";
+        itA++;
+    }
+
+    cout<<endl;
+    cout<<endl;
+    cout<<"------------"<<endl;
+    cout<<endl;
+
+    typename list<typename Grafo<C>::Arco>::iterator it=adyacentes.begin();
+
+    while (it != adyacentes.end()){ //Para todos sus adyacentes
         if (visitados.find((*it).devolver_adyacente())==visitados.end()){ // Si no esta visitado
-            DFS_visit(grafo,(*it).devolver_adyacente(),visitados);
+            DFS_visit(grafo,(*it).devolver_adyacente(),visitados,recorrido);
         }
-
+        it++;
     }
 
 

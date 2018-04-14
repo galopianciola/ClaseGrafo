@@ -231,8 +231,10 @@ template <typename C> void Grafo<C>::devolver_adyacentes(int origen, list<Arco> 
         typename map<int,C>::const_iterator itA;
 
         itA = it->second.begin();
-        while (itA!=it->second.end())
+        while (itA!=it->second.end()){
             adyacentes.push_back(Arco(itA->first,itA->second));
+            itA++;
+        }
     }
 
 
