@@ -29,18 +29,18 @@ public:
 	/* FIN SUBCLASE ARCO */
 
 public:
-	// NOTA: Dependiendo de la implementaciÃ³n puede ser necesario incluir otras funciones constructuras
+	// NOTA: Dependiendo de la implementación puede ser necesario incluir otras funciones constructuras
 	Grafo(); // constructor
 	Grafo(const Grafo & otroGrafo); //
 
 	~Grafo(); //
 
-	Grafo & operator = (const Grafo & otroGrafo); // preguntar
+	Grafo & operator = (const Grafo & otroGrafo);
 
-	// Devuelve true si la cantidad de vÃ©rtices es cero
+	// Devuelve true si la cantidad de vértices es cero
 	bool esta_vacio() const; //
 
-	// Indica la cantidad de vÃ©rtices del grafo
+	// Indica la cantidad de vértices del grafo
 	int devolver_longitud() const; //
 
 	bool existe_vertice(int vertice) const; //
@@ -56,7 +56,7 @@ public:
 
 	void agregar_vertice(int vertice); //
 
-	// POST CONDICION: Para todo vÃ©rtice v != vertice: !existeArco(v, vertice) && !existeArco(vertice, v)
+	// POST CONDICION: Para todo vértice v != vertice: !existeArco(v, vertice) && !existeArco(vertice, v)
 	void eliminar_vertice(int vertice); //
 
 	// PRE CONDICION: existeArco(origen, destino)
@@ -279,6 +279,28 @@ template <typename C> void Grafo<C>::modificar_costo_arco(int origen, int destin
     }
 
 }
+
+
+/*template <typename C> void Grafo<C>::arcoReversa(int origen, int destino)  TERMINAR
+{
+    int auxiliar;
+    typename map<int,map<int,C> >::const_iterator itO;
+
+    if (existe_arco(origen,destino)){
+
+        itO=grafo.find(origen);
+
+        typename map<int,C>::const_iterator it;
+
+        it = itO->first.find(destino);
+
+        auxiliar= it->first;
+        it->first=itO->first;
+        itO->first=auxiliar;
+
+    }
+
+}*/
 
 template <typename C> void Grafo<C>::agregar_arco(int origen, int destino, const C & costo)
 {
