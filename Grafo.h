@@ -3,6 +3,8 @@
 
 #include <list>
 #include <map>
+#include <set>
+#include<iostream>
 
 using namespace std;
 
@@ -27,18 +29,18 @@ public:
 	/* FIN SUBCLASE ARCO */
 
 public:
-	// NOTA: Dependiendo de la implementaciÃ³n puede ser necesario incluir otras funciones constructuras
+	// NOTA: Dependiendo de la implementación puede ser necesario incluir otras funciones constructuras
 	Grafo(); // constructor
 	Grafo(const Grafo & otroGrafo); //
 
 	~Grafo(); //
 
-	Grafo & operator = (const Grafo & otroGrafo); // preguntar
+	Grafo & operator = (const Grafo & otroGrafo);
 
-	// Devuelve true si la cantidad de vÃ©rtices es cero
+	// Devuelve true si la cantidad de vértices es cero
 	bool esta_vacio() const; //
 
-	// Indica la cantidad de vÃ©rtices del grafo
+	// Indica la cantidad de vértices del grafo
 	int devolver_longitud() const; //
 
 	bool existe_vertice(int vertice) const; //
@@ -52,20 +54,24 @@ public:
 
 	void devolver_adyacentes(int origen, list<Arco> & adyacentes) const; //
 
-	void agregar_vertice(int vertice);
+	void agregar_vertice(int vertice); //
 
-	// POST CONDICION: Para todo vÃ©rtice v != vertice: !existeArco(v, vertice) && !existeArco(vertice, v)
-	void eliminar_vertice(int vertice);
+	// POST CONDICION: Para todo vértice v != vertice: !existeArco(v, vertice) && !existeArco(vertice, v)
+	void eliminar_vertice(int vertice); //
 
 	// PRE CONDICION: existeArco(origen, destino)
-	void modificar_costo_arco(int origen, int destino, const C & costo);
+	void modificar_costo_arco(int origen, int destino, const C & costo); //
 
 	// PRE CONDICION: existeVertice(origen) && existeVertice(destino)
 	// POST CONDICION: existeArco(origen, destino)
 	void agregar_arco(int origen, int destino, const C & costo);
 
 	// POST CONDICION: !existeArco(origen, destino)
-	void eliminar_arco(int origen, int destino);
+	void eliminar_arco(int origen, int destino); //
+
+	void mostrarGrafo(Grafo<C> G);
+
+	void arcoReversa(int origen,int destino);
 
 	void vaciar(); //
 
@@ -206,10 +212,11 @@ template <typename C> const C & Grafo<C>::costo_arco(int origen, int destino) co
 template <typename C> void Grafo<C>::devolver_vertices(list<int> & vertices) const
 {
 
-    typename map<int,map<int,C> >::iterator it;
+    typename map<int,map<int,C> >::const_iterator it = grafo.begin();
 
     while (it != grafo.end()){
         vertices.push_back(it->first);
+        it++;
     }
 
 }
@@ -226,8 +233,10 @@ template <typename C> void Grafo<C>::devolver_adyacentes(int origen, list<Arco> 
         typename map<int,C>::const_iterator itA;
 
         itA = it->second.begin();
-        while (itA!=it->second.end())
+        while (itA!=it->second.end()){
             adyacentes.push_back(Arco(itA->first,itA->second));
+            itA++;
+        }
     }
 
 
@@ -235,11 +244,14 @@ template <typename C> void Grafo<C>::devolver_adyacentes(int origen, list<Arco> 
 }
 
 template <typename C> void Grafo<C>::agregar_vertice(int vertice)
-{   typename map<int,map<int,C> >::const_iterator it = grafo.begin();;
+{
 
-    if (!existe_vertice(vertice)){
-        //grafo.insert(it, std::pair<int,map<int,C> >(vertice,(1,1)));
+    if (grafo.find(vertice) == grafo.end()) //Si no existe ya el vertice
+    {
+        map<int, C> adyacentes;
+        grafo[vertice] = adyacentes; // DUDA[]
     }
+
 }
 
 template <typename C> void Grafo<C>::eliminar_vertice(int vertice)
@@ -270,11 +282,51 @@ template <typename C> void Grafo<C>::modificar_costo_arco(int origen, int destin
 
 }
 
+
+template <typename C> void Grafo<C>::arcoReversa(grafo)
+{
+    list<int> vertices;
+
+    devolver_vertices(vertices);
+
+    list<int>::iterator it=vertices.begin();
+
+    list<typename Grafo<C>::Arco>::iterator itA=adyacentes.begin();
+
+    while (it!=vertices.end()){
+
+        while (it != adyacentes.end()){
+
+
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+    }
+
+}
+
 template <typename C> void Grafo<C>::agregar_arco(int origen, int destino, const C & costo)
 {
-    if (existe_arco(origen,destino)){
+
+    typename map<int,map<int,C> >::iterator itO;
+
+    if (existe_vertice(origen)){
+        itO = grafo.find(origen);
+        if (existe_arco(origen,destino) != true)
+            itO->second[destino]=costo;
+    }
+
 }
-}
+
 
 template <typename C> void Grafo<C>::eliminar_arco(int origen, int destino)
 {
@@ -292,11 +344,33 @@ template <typename C> void Grafo<C>::eliminar_arco(int origen, int destino)
 
 }
 
+template <typename C> void Grafo<C>::mostrarGrafo(Grafo<C> G)
+{
+    list<int> Vertices;
+    G.devolver_vertices(Vertices);
+    list<int>::const_iterator It=Vertices.begin();
+    while(It != Vertices.end())
+    {
+        list<int> Adyacentes;
+        list<int>::const_iterator ItA ;
+        G.devolver_adyacentes(*It, Adyacentes);
+        ItA= Adyacentes.begin();
+        cout << *It << " - > "<<endl;
+        while (ItA != Adyacentes.end())
+        {
+            cout << *ItA << " ";
+            ItA++;
+        }
+        It++;
+        cout<<endl;
+    }
+    cout << endl;
+}
 
 
 template <typename C> void Grafo<C>::vaciar()
 {
-    this->grafo.erase();
+    this->grafo.clear();
 }
 
 #endif /* GRAFO_H_ */
