@@ -11,7 +11,6 @@ using namespace std;
 template <typename C> class Grafo
 {
 public:
-
     /* SUBCLASE ARCO */
 
 	class Arco
@@ -79,7 +78,6 @@ private:
 
 }; // class Grafo
 
-
 /* METODOS ARCO */
 
 template <typename C> Grafo<C>::Arco::Arco()
@@ -117,6 +115,7 @@ template <typename C> const C & Grafo<C>::Arco::devolver_costo() const
 template <typename C> Grafo<C>::Grafo()
 {
 }
+
 
 template <typename C> Grafo<C>::Grafo(const Grafo & otroGrafo)
 {
@@ -281,26 +280,6 @@ template <typename C> void Grafo<C>::modificar_costo_arco(int origen, int destin
 }
 
 
-/*template <typename C> void Grafo<C>::arcoReversa(int origen, int destino)  TERMINAR
-{
-    int auxiliar;
-    typename map<int,map<int,C> >::const_iterator itO;
-
-    if (existe_arco(origen,destino)){
-
-        itO=grafo.find(origen);
-
-        typename map<int,C>::const_iterator it;
-
-        it = itO->first.find(destino);
-
-        auxiliar= it->first;
-        it->first=itO->first;
-        itO->first=auxiliar;
-
-    }
-
-}*/
 
 template <typename C> void Grafo<C>::agregar_arco(int origen, int destino, const C & costo)
 {

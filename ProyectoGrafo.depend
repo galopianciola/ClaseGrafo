@@ -36,3 +36,14 @@
 	<set>
 	<iostream>
 
+1525989503 source:c:\users\labiii-vdi4\desktop\clasegrafo\main.cpp
+	"Grafo.h"
+	"iostream"
+	<queue>
+
+1525991962 c:\users\labiii-vdi4\desktop\clasegrafo\grafo.h
+	<list>
+	<map>
+	<set>
+	<iostream>
+

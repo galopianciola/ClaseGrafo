@@ -87,9 +87,18 @@ template <typename C> void DFS_forest(const Grafo<C> & grafo, int fuente)
     cout<<" "<<endl;
 
     if (backk>1)
-        cout<<"El grafo tiene al menos un arco back, por lo tanto, el grafo es ciclico"<<endl;
+        cout<<"El grafo tiene "<<backk<<" arco/s back, por lo tanto, el grafo es ciclico"<<endl;
     else
         cout<<"El grafo no tiene arcos back, por lo tanto, el grafo es aciclico"<<endl;
+    if (forwardd>1)
+        cout<<"El grafo tiene "<<forwardd<<" arco/s forward"<<endl;
+    else
+        cout<<"El grafo no tiene arcos forward"<<endl;
+    if (cross)
+        cout<<"El grafo tiene "<<cross<<" arco/s cross"<<endl;
+    else
+        cout<<"El grafo no tiene arcos cross"<<endl;
+    cout<<"Y el grafo contiene "<<tree<<" arcos tree"<<endl;
 
     cout<<" "<<endl;
     cout<<" "<<endl;
@@ -122,6 +131,15 @@ template <typename C> void DFS_visit(const Grafo<C> & grafo, int vertice, set<in
     typename list<typename Grafo<C>::Arco>::iterator itA=adyacentes.begin();
     typename list<typename Grafo<C>::Arco>::iterator it=adyacentes.begin();
 
+    cout<<"Vertice actual: "<<vertice<<" ["<<descubierto[vertice]<<"],["<<finalizado[vertice]<<"]"<<endl;
+    cout<<"Lista de adyacentes a "<<vertice<<": ";
+    while (itA != adyacentes.end()){
+        cout<<(*itA).devolver_adyacente()<<" ";
+        itA++;
+    }
+    cout<<endl;
+    cout<<endl;
+
     while (it != adyacentes.end()){ //Para todos sus adyacentes
         if (finalizado[(*it).devolver_adyacente()]!=0){
             if (descubierto[vertice]>finalizado[(*it).devolver_adyacente()])
@@ -141,19 +159,37 @@ template <typename C> void DFS_visit(const Grafo<C> & grafo, int vertice, set<in
     time++;
     finalizado[vertice]=time;
     cout<<"Vertice actual: "<<vertice<<" ["<<descubierto[vertice]<<"],["<<finalizado[vertice]<<"]"<<endl;
-    ///cout<<time<<","<<endl;
-       cout<<"Lista de adyacentes a "<<vertice<<": ";
-    while (itA != adyacentes.end()){
-        cout<<(*itA).devolver_adyacente()<<" ";
-        itA++;
-    }
+    cout<<"Vertice finalizado"<<endl;
 
     sort_topologico.push_back(vertice);
 
     cout<<endl;
-    cout<<endl;
-    cout<<"------------"<<endl;
-    cout<<endl;
+
+}
+
+template <typename C> void PuntosArticulacion(const Grafo<C> & grafo, int fuente){
+    struct nodoLista{
+        int vertice;
+        list<nodoLista> hijo;
+
+    };
+    /*typename list<typename Grafo<C>::Arco>::iterator it=adyacentes.begin();
+     while (it != adyacentes.end()){ //Para todos sus adyacentes
+        if (finalizado[(*it).devolver_adyacente()]!=0){
+            if (descubierto[vertice]>finalizado[(*it).devolver_adyacente()])
+                cross++;
+            else
+                forwardd++;
+        }
+        if (visitados.find((*it).devolver_adyacente())==visitados.end()){ // Si no esta visitado
+            tree++;
+            DFS_visit(grafo,(*it).devolver_adyacente(),visitados,recorrido,time,descubierto,finalizado,tree,backk,cross,forwardd,sort_topologico);
+        }
+        else
+            if (finalizado[(*it).devolver_adyacente()]==0)
+                backk++;
+        it++;
+    }*/
 
 }
 
