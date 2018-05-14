@@ -170,26 +170,24 @@ template <typename C> void DFS_visit(const Grafo<C> & grafo, int vertice, set<in
 template <typename C> void PuntosArticulacion(const Grafo<C> & grafo, int fuente){
     struct nodoLista{
         int vertice;
-        list<nodoLista> hijo;
-
+        list<*nodoLista> hijos;
+        /// sig implicito
     };
-    /*typename list<typename Grafo<C>::Arco>::iterator it=adyacentes.begin();
+
+    list<*nodoLista> arbol;
+
+    typename list<typename Grafo<C>::Arco> adyacentes;
+    grafo.devolver_adyacentes(fuente,adyacentes);
+
+    typename list<typename Grafo<C>::Arco>::iterator it=adyacentes.begin();
+
+    struct nodoLista nodo = {};
+    arbol.push_back()
+
      while (it != adyacentes.end()){ //Para todos sus adyacentes
-        if (finalizado[(*it).devolver_adyacente()]!=0){
-            if (descubierto[vertice]>finalizado[(*it).devolver_adyacente()])
-                cross++;
-            else
-                forwardd++;
-        }
-        if (visitados.find((*it).devolver_adyacente())==visitados.end()){ // Si no esta visitado
-            tree++;
-            DFS_visit(grafo,(*it).devolver_adyacente(),visitados,recorrido,time,descubierto,finalizado,tree,backk,cross,forwardd,sort_topologico);
-        }
-        else
-            if (finalizado[(*it).devolver_adyacente()]==0)
-                backk++;
-        it++;
-    }*/
+        if (visitados.find((*it).devolver_adyacente())==visitados.end()) // Si no esta visitado
+            DFS_visit(grafo,(*it).devolver_adyacente(),visitados);
+    }
 
 }
 
