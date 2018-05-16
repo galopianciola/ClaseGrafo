@@ -2,6 +2,7 @@
 #include "iostream"
 #include <queue>
 #include <limits>
+#include <algorithm>
 
 using namespace std;
 
@@ -169,6 +170,13 @@ template <typename C> void DFS_visit(const Grafo<C> & grafo, int vertice, set<in
 }
 
 
+struct nodoLista{
+        int vertice;
+        bool es_hoja;
+        int numBack;
+        int bajo_hijos;
+    };
+
 
 template <typename C> void puntoArticulado(const Grafo<C> & grafo, int fuente){
     int indice=0;
@@ -184,44 +192,43 @@ template <typename C> void puntoArticulado(const Grafo<C> & grafo, int fuente){
 
     list<int>::iterator it=vertices.begin();
 
-    struct nodoLista{
-        int vertice;
-        bool es_hoja;
-        int numBack;
-        int bajo_hijos;
-    };
+    nodoLista arbolDescubrimiento[grafo.devolver_longitud()];
 
-    nodoLista arbolDescubrimiento = new nodoLista[grafo.devolver_longitud()];
+
+
     arbolDescubrimiento[indice].vertice=fuente;
     arbolDescubrimiento[indice].numBack=std::numeric_limits<int>::max();
-    if (adyacentes.empty==true)
+    if (adyacentes.empty()==true)
         arbolDescubrimiento[indice].es_hoja=true;
     else{
         arbolDescubrimiento[indice].es_hoja=false;
-        dfsArticulado(grafo,indice++,arbolDescubrimiento,visitados,raiz);
+        dfsArticulado(grafo,fuente,indice++,arbolDescubrimiento,visitados,raiz);
     }
-    min_bajo(arbolDescubrimiento);
+    min_bajo(grafo,raiz,arbolDescubrimiento);
 }
 
-template <typename C> void min_bajo(const Grafo<C> & grafo,struct arbolDescubrimiento[],int raiz){
+
+template <typename C> void min_bajo(const Grafo<C> & grafo,int raiz, nodoLista arbolDescubrimiento[] ){
+
     int bajo;
-    for (i=grafo.devolver_longitud();i=>0;i--){
-        if (arbolDescubrimento[i].es_hoja)
-            arbolDescubrimento[i].bajo_hijos=std::numeric_limits<int>::max();
-        else
-            arbolDescubrimento[i].bajo_hijos=bajo;
-        bajo=min(i,arbolDescubrimento[i].numBack,arbolDescubrimento[i].bajo_hijos)
+    for (int i=grafo.devolver_longitud();i>=0;i--){
+        if (arbolDescubrimiento[i].es_hoja)
+            arbolDescubrimiento[i].bajo_hijos=std::numeric_limits<int>::max();
+        else{
+            arbolDescubrimiento[i].bajo_hijos=bajo;
+            bajo=std::min(min(i,arbolDescubrimiento[i].numBack),arbolDescubrimiento[i].bajo_hijos);
+        }
     }
     if (raiz>=2)
-        cout<<"Punto de Articulacion: "<<arbolDescubrimento[0].vertice;
-    for (i=1;i<=grafo.devolver_longitud();i++)
-        if (arbolDescubrimento[i].bajo_hijos>=i)
-         cout<<"Punto de Articulacion: "<<arbolDescubrimento[i].vertice;
+        cout<<"Punto de Articulacion: "<<arbolDescubrimiento[0].vertice;
+    for (int i=1;i<=grafo.devolver_longitud();i++)
+        if (arbolDescubrimiento[i].bajo_hijos>=i)
+         cout<<"Punto de Articulacion: "<<arbolDescubrimiento[i].vertice;
 
 };
 
 
-template <typename C> void dfsArticulado(const Grafo<C> & grafo,int fuente,int indice,arbolDescubrimiento[],set<int> & visitados){
+template <typename C> void dfsArticulado(const Grafo<C> & grafo,int fuente,int indice,nodoLista arbolDescubrimiento[],set<int> & visitados, int raiz){
 
 
     list<typename Grafo<C>::Arco> adyacentes;
@@ -236,10 +243,10 @@ template <typename C> void dfsArticulado(const Grafo<C> & grafo,int fuente,int i
                 arbolDescubrimiento[indice].vertice=((*it).devolver_adyacente());
                 arbolDescubrimiento[indice].numBack=std::numeric_limits<int>::max();
                 arbolDescubrimiento[indice].es_hoja=false; /// no es hoja
-                dfsArticulado(grafo,(*it).devolver_adyacente(),indice++,arbolDescubrimiento,visitados);
+                dfsArticulado(grafo,(*it).devolver_adyacente(),indice++,arbolDescubrimiento,visitados,raiz);
         }
         else /// si esta visitado (arco back)
-            for (int i=0;i<grafo.devolver_longitud;i++){ ///busca el num(back)
+            for (int i=0;i<grafo.devolver_longitud();i++){ ///busca el num(back)
                 if (arbolDescubrimiento[i].vertice == (*it).devolver_adyacente())
                     arbolDescubrimiento[indice].numBack=arbolDescubrimiento[i].vertice;
         }
@@ -302,6 +309,7 @@ template <typename C> void BFS(const Grafo<C> & grafo, int fuente){
 
 int main(int argc, char **argv)
 {
+
 	Grafo<int> grafo;
 
     grafo.agregar_vertice(1);
@@ -327,7 +335,9 @@ int main(int argc, char **argv)
     grafo.agregar_arco(8,9,89);
     grafo.agregar_arco(9,3,93);
 
-    DFS_forest(grafo,1);
+    /* DFS_forest(grafo,1); */
+
+    puntoArticulado(grafo,1);
 
 	return 0;
 }

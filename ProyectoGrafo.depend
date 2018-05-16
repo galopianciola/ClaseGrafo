@@ -15,11 +15,14 @@
 	<list>
 	<map>
 
-1524525331 source:c:\users\dell\documents\ingeniería de sistemas (uncpba)\2°\analisis y diseño de algoritmos ii\proyectos\proyectografo\main.cpp
+1526499046 source:c:\users\dell\documents\ingeniería de sistemas (uncpba)\2°\analisis y diseño de algoritmos ii\proyectos\proyectografo\main.cpp
 	"Grafo.h"
 	"iostream"
+	<queue>
+	<limits>
+	<algorithm>
 
-1524526484 c:\users\dell\documents\ingeniería de sistemas (uncpba)\2°\analisis y diseño de algoritmos ii\proyectos\proyectografo\grafo.h
+1526172009 c:\users\dell\documents\ingeniería de sistemas (uncpba)\2°\analisis y diseño de algoritmos ii\proyectos\proyectografo\grafo.h
 	<list>
 	<map>
 	<set>
