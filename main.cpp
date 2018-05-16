@@ -195,7 +195,7 @@ template <typename C> void puntoArticulado(const Grafo<C> & grafo, int fuente){
     nodoLista arbolDescubrimiento[grafo.devolver_longitud()];
 
 
-
+    visitados.insert(fuente); //Marco como visitado
     arbolDescubrimiento[indice].vertice=fuente;
     arbolDescubrimiento[indice].numBack=std::numeric_limits<int>::max();
     if (adyacentes.empty()==true)
@@ -203,6 +203,7 @@ template <typename C> void puntoArticulado(const Grafo<C> & grafo, int fuente){
     else{
         arbolDescubrimiento[indice].es_hoja=false;
         dfsArticulado(grafo,fuente,indice++,arbolDescubrimiento,visitados,raiz);
+
     }
     min_bajo(grafo,raiz,arbolDescubrimiento);
 }
@@ -230,26 +231,35 @@ template <typename C> void min_bajo(const Grafo<C> & grafo,int raiz, nodoLista a
 
 template <typename C> void dfsArticulado(const Grafo<C> & grafo,int fuente,int indice,nodoLista arbolDescubrimiento[],set<int> & visitados, int raiz){
 
-
     list<typename Grafo<C>::Arco> adyacentes;
     grafo.devolver_adyacentes(fuente,adyacentes);
 
     typename list<typename Grafo<C>::Arco>::iterator it=adyacentes.begin();
-
-
-
+    typename list<typename Grafo<C>::Arco>::iterator itas=adyacentes.begin();
+    while (itas!=adyacentes.end()){
+        cout<<((*itas).devolver_adyacente())<<" , ";
+        itas++;
+    }
+        cout<<endl;
+        cout<<endl;
+        cout<<endl;
+        cout<<endl;
      while (it != adyacentes.end()){ ///Para todos sus adyacentes
         if (visitados.find((*it).devolver_adyacente())==visitados.end()){ /// Si no esta visitado
+                indice++;
                 arbolDescubrimiento[indice].vertice=((*it).devolver_adyacente());
                 arbolDescubrimiento[indice].numBack=std::numeric_limits<int>::max();
                 arbolDescubrimiento[indice].es_hoja=false; /// no es hoja
-                dfsArticulado(grafo,(*it).devolver_adyacente(),indice++,arbolDescubrimiento,visitados,raiz);
+                visitados.insert((*it).devolver_adyacente()); //Marco como visitados
+                dfsArticulado(grafo,(*it).devolver_adyacente(),indice,arbolDescubrimiento,visitados,raiz);
         }
-        else /// si esta visitado (arco back)
+        else{ /// si esta visitado (arco back)
             for (int i=0;i<grafo.devolver_longitud();i++){ ///busca el num(back)
                 if (arbolDescubrimiento[i].vertice == (*it).devolver_adyacente())
                     arbolDescubrimiento[indice].numBack=arbolDescubrimiento[i].vertice;
+             }
         }
+        it++;
     }
     if (it== adyacentes.end())
         arbolDescubrimiento[indice].es_hoja=true;

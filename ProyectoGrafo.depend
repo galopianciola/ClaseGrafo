@@ -50,3 +50,16 @@
 	<set>
 	<iostream>
 
+1526500387 source:/home/alumno/Descargas/ClaseGrafo/main.cpp
+	"Grafo.h"
+	"iostream"
+	<queue>
+	<limits>
+	<algorithm>
+
+1526499208 /home/alumno/Descargas/ClaseGrafo/Grafo.h
+	<list>
+	<map>
+	<set>
+	<iostream>
+
