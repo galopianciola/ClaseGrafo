@@ -63,3 +63,29 @@
 	<set>
 	<iostream>
 
+1526569198 source:c:\users\nico\desktop\clasegrafo\main.cpp
+	"Grafo.h"
+	"iostream"
+	<queue>
+	<limits>
+	<algorithm>
+
+1526569198 c:\users\nico\desktop\clasegrafo\grafo.h
+	<list>
+	<map>
+	<set>
+	<iostream>
+
+1526574170 source:e:\clasegrafo\main.cpp
+	"Grafo.h"
+	"iostream"
+	<queue>
+	<limits>
+	<algorithm>
+
+1526569200 e:\clasegrafo\grafo.h
+	<list>
+	<map>
+	<set>
+	<iostream>
+

@@ -52,6 +52,7 @@ template <typename C> void DFS_forest(const Grafo<C> & grafo, int fuente)
     cout<<" "<<endl;
 
     set<int> visitados;
+    set<int> finish;
 
     list<int>::iterator it=vertices.begin();
 
@@ -77,7 +78,7 @@ template <typename C> void DFS_forest(const Grafo<C> & grafo, int fuente)
     {
         if (visitados.find(fuente)==visitados.end())  ///Si el vertice no esta visitado
         {
-            DFS_visit(grafo,fuente,visitados,recorrido,time,descubierto,finalizado,tree,backk,cross,forwardd,sort_topologico);
+            DFS_visit(grafo,fuente,visitados,recorrido,time,descubierto,finalizado,tree,backk,cross,forwardd,sort_topologico,finish);
         }
         it++;
     }
@@ -124,11 +125,12 @@ template <typename C> void DFS_forest(const Grafo<C> & grafo, int fuente)
     cout<<" "<<endl;
 }
 
-template <typename C> void DFS_visit(const Grafo<C> & grafo, int vertice, set<int> & visitados, list<int> & recorrido,int & time,int descubierto[],int finalizado[],int & tree,int & backk,int & cross,int & forwardd,list<int> & sort_topologico)
+template <typename C> void DFS_visit(const Grafo<C> & grafo, int vertice, set<int> & visitados, list<int> & recorrido,int & time,int descubierto[],int finalizado[],int & tree,int & backk,int & cross,int & forwardd,list<int> & sort_topologico,set<int> finish)
 {
     time++;
 
     descubierto[vertice]=time;
+
 
     visitados.insert(vertice); //Marco como visitado
 
@@ -153,7 +155,7 @@ template <typename C> void DFS_visit(const Grafo<C> & grafo, int vertice, set<in
 
     while (it != adyacentes.end())  //Para todos sus adyacentes
     {
-        if (finalizado[(*it).devolver_adyacente()]!=0)
+        if (finish.find((*it).devolver_adyacente())==finish.end())
         {
             if (descubierto[vertice]>finalizado[(*it).devolver_adyacente()])
                 cross++;
@@ -163,12 +165,17 @@ template <typename C> void DFS_visit(const Grafo<C> & grafo, int vertice, set<in
         if (visitados.find((*it).devolver_adyacente())==visitados.end())  // Si no esta visitado
         {
             tree++;
-            DFS_visit(grafo,(*it).devolver_adyacente(),visitados,recorrido,time,descubierto,finalizado,tree,backk,cross,forwardd,sort_topologico);
+            DFS_visit(grafo,(*it).devolver_adyacente(),visitados,recorrido,time,descubierto,finalizado,tree,backk,cross,forwardd,sort_topologico,finish);
         }
-        else if (finalizado[(*it).devolver_adyacente()]==0)
-            backk++;
+        else
+        {
+            if ( (visitados.find((*it).devolver_adyacente()) != visitados.end()) && (finish.find((*it).devolver_adyacente())==finish.end()) )
+                if (finalizado[((*it).devolver_adyacente())]==0)
+                    backk++;
+        }
         it++;
     }
+    finish.insert(vertice);
     time++;
     finalizado[vertice]=time;
     cout<<"Vertice actual: "<<vertice<<" ["<<descubierto[vertice]<<"],["<<finalizado[vertice]<<"]"<<endl;
@@ -210,6 +217,7 @@ template <typename C> void puntoArticulado(const Grafo<C> & grafo, int fuente)
 
     set<int> puntosArt;
     int hijosRaiz=0;
+    int u=0;
 
     for (int i=1; i<=grafo.devolver_longitud(); i++)
     {
@@ -224,7 +232,9 @@ template <typename C> void puntoArticulado(const Grafo<C> & grafo, int fuente)
         cout<<fuente<<" es punto de articulacion (criterio 1)"<<endl;
         puntosArt.insert(fuente);
     }
-
+    time++;
+    discover[u]=time;
+    visitados.insert(u);
 
     list<int> vertices;
     grafo.devolver_vertices(vertices);
@@ -233,7 +243,7 @@ template <typename C> void puntoArticulado(const Grafo<C> & grafo, int fuente)
 
     while (it != vertices.end()) ///para todos los vertices
     {
-        for (int i=1;i<=grafo.devolver_longitud();i++) ///itera para buscar hijos
+        for (int i=1; i<=grafo.devolver_longitud(); i++) ///itera para buscar hijos
         {
             if ( (padre[i]==(*it)) && (bajo[i]>=discover[(*it)]) && (puntosArt.find(*it)==puntosArt.end()) ) ///si es hijo
             {
@@ -363,7 +373,7 @@ int main(int argc, char **argv)
     grafo.agregar_arco(8,9,89);
     grafo.agregar_arco(9,3,93);
 
-    //DFS_forest(grafo,1);
+    DFS_forest(grafo,1);
 
     puntoArticulado(grafo,1);
 
