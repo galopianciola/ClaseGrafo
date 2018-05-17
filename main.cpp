@@ -9,23 +9,25 @@ using namespace std;
 template <typename C>
 ostream & operator << (ostream & salida, const Grafo<C> & grafo)
 {
-	// Recorremos todos los vertices
-	list<int> vertices;
-	grafo.devolver_vertices(vertices);
-	list<int>::iterator v = vertices.begin();
-	while (v != vertices.end()) {
-		salida << "    " << *v << "\n";
-		// Recorremos todos los adyacentes de cada vertice
-		list<typename Grafo<C>::Arco> adyacentes;
-		grafo.devolver_adyacentes(*v, adyacentes);
-		typename list<typename Grafo<C>::Arco>::iterator ady = adyacentes.begin();
-		while (ady != adyacentes.end()) {
-			salida << "    " << *v << "-> " << ady->devolver_adyacente() << " (" << ady->devolver_costo() << ")\n";
-			ady++;
-		}
-		v++;
-	}
-	return salida;
+    // Recorremos todos los vertices
+    list<int> vertices;
+    grafo.devolver_vertices(vertices);
+    list<int>::iterator v = vertices.begin();
+    while (v != vertices.end())
+    {
+        salida << "    " << *v << "\n";
+        // Recorremos todos los adyacentes de cada vertice
+        list<typename Grafo<C>::Arco> adyacentes;
+        grafo.devolver_adyacentes(*v, adyacentes);
+        typename list<typename Grafo<C>::Arco>::iterator ady = adyacentes.begin();
+        while (ady != adyacentes.end())
+        {
+            salida << "    " << *v << "-> " << ady->devolver_adyacente() << " (" << ady->devolver_costo() << ")\n";
+            ady++;
+        }
+        v++;
+    }
+    return salida;
 }
 
 
@@ -39,7 +41,8 @@ template <typename C> void DFS_forest(const Grafo<C> & grafo, int fuente)
 
     list<int>::iterator itA=vertices.begin();
 
-    while (itA != vertices.end()){
+    while (itA != vertices.end())
+    {
         cout<<*itA<<" ";
         itA++;
     }
@@ -64,13 +67,16 @@ template <typename C> void DFS_forest(const Grafo<C> & grafo, int fuente)
     int* descubierto = new int[grafo.devolver_longitud()];
     int* finalizado = new int[grafo.devolver_longitud()];
 
-    for (int i=1;i<=grafo.devolver_longitud();i++){
+    for (int i=1; i<=grafo.devolver_longitud(); i++)
+    {
         descubierto[i]=0;
         finalizado[i]=0;
     }
 
-    while (it != vertices.end()){
-        if (visitados.find(fuente)==visitados.end()){ ///Si el vertice no esta visitado
+    while (it != vertices.end())
+    {
+        if (visitados.find(fuente)==visitados.end())  ///Si el vertice no esta visitado
+        {
             DFS_visit(grafo,fuente,visitados,recorrido,time,descubierto,finalizado,tree,backk,cross,forwardd,sort_topologico);
         }
         it++;
@@ -78,7 +84,8 @@ template <typename C> void DFS_forest(const Grafo<C> & grafo, int fuente)
 
     cout<<"Recorrido total DFS: "<<endl;
     list<int>::iterator itR=recorrido.begin();
-    while (itR != recorrido.end()){
+    while (itR != recorrido.end())
+    {
         cout<<*itR<<" ";
         itR++;
     }
@@ -106,7 +113,8 @@ template <typename C> void DFS_forest(const Grafo<C> & grafo, int fuente)
     cout<<" "<<endl;
     cout<<"Sort Topologico: ";
     list<int>::iterator Ist=sort_topologico.begin();
-    while (Ist!=sort_topologico.end()){
+    while (Ist!=sort_topologico.end())
+    {
         cout<<*Ist<<" ";
         Ist++;
     }
@@ -135,27 +143,30 @@ template <typename C> void DFS_visit(const Grafo<C> & grafo, int vertice, set<in
 
     cout<<"Vertice actual: "<<vertice<<" ["<<descubierto[vertice]<<"],["<<finalizado[vertice]<<"]"<<endl;
     cout<<"Lista de adyacentes a "<<vertice<<": ";
-    while (itA != adyacentes.end()){
+    while (itA != adyacentes.end())
+    {
         cout<<(*itA).devolver_adyacente()<<" ";
         itA++;
     }
     cout<<endl;
     cout<<endl;
 
-    while (it != adyacentes.end()){ //Para todos sus adyacentes
-        if (finalizado[(*it).devolver_adyacente()]!=0){
+    while (it != adyacentes.end())  //Para todos sus adyacentes
+    {
+        if (finalizado[(*it).devolver_adyacente()]!=0)
+        {
             if (descubierto[vertice]>finalizado[(*it).devolver_adyacente()])
                 cross++;
             else
                 forwardd++;
         }
-        if (visitados.find((*it).devolver_adyacente())==visitados.end()){ // Si no esta visitado
+        if (visitados.find((*it).devolver_adyacente())==visitados.end())  // Si no esta visitado
+        {
             tree++;
             DFS_visit(grafo,(*it).devolver_adyacente(),visitados,recorrido,time,descubierto,finalizado,tree,backk,cross,forwardd,sort_topologico);
         }
-        else
-            if (finalizado[(*it).devolver_adyacente()]==0)
-                backk++;
+        else if (finalizado[(*it).devolver_adyacente()]==0)
+            backk++;
         it++;
     }
     time++;
@@ -170,107 +181,110 @@ template <typename C> void DFS_visit(const Grafo<C> & grafo, int vertice, set<in
 }
 
 
-struct nodoLista{
-        int vertice;
-        bool es_hoja;
-        int numBack;
-        int bajo_hijos;
-    };
+template <typename C> void puntoArticulado(const Grafo<C> & grafo, int fuente)
+{
+    cout<<""<<endl;
+    cout<<"----------PUNTOS DE ARTICULACION----------"<<endl;
+    cout<<""<<endl;
+
+    int discover[grafo.devolver_longitud()+1];
+    int finish[grafo.devolver_longitud()+1];
+    int backs[grafo.devolver_longitud()+1];
+    int bajo[grafo.devolver_longitud()+1];
+    int padre[grafo.devolver_longitud()+1];
+
+    for (int i=1; i<=grafo.devolver_longitud(); i++) ///completo arrays con discernibles
+    {
+        discover[i]=numeric_limits<int>::max();
+        finish[i]=numeric_limits<int>::max();
+        backs[i]=numeric_limits<int>::max();
+        bajo[i]=numeric_limits<int>::max();
+        padre[i]=numeric_limits<int>::max();
+    }
+
+    set<int> visitados;
+    set<int> finalizados;
+    int time=0;
+
+    dfsArticulado(grafo,fuente,visitados,finalizados,time,discover,finish,backs,bajo,padre);
+
+    set<int> puntosArt;
+    int hijosRaiz=0;
+
+    for (int i=1; i<=grafo.devolver_longitud(); i++)
+    {
+        if (padre[i]==fuente)
+        {
+            hijosRaiz++;
+        }
+    }
+
+    if (hijosRaiz>=2)
+    {
+        cout<<fuente<<" es punto de articulacion (criterio 1)"<<endl;
+        puntosArt.insert(fuente);
+    }
 
 
-template <typename C> void puntoArticulado(const Grafo<C> & grafo, int fuente){
-    int indice=0;
     list<int> vertices;
     grafo.devolver_vertices(vertices);
 
-    list<typename Grafo<C>::Arco> adyacentes;
-    grafo.devolver_adyacentes(fuente,adyacentes);
+    list<int>::iterator it = vertices.begin();
 
-    int raiz=adyacentes.size();
+    while (it != vertices.end()) ///para todos los vertices
+    {
+        for (int i=1;i<=grafo.devolver_longitud();i++) ///itera para buscar hijos
+        {
+            if ( (padre[i]==(*it)) && (bajo[i]>=discover[(*it)]) && (puntosArt.find(*it)==puntosArt.end()) ) ///si es hijo
+            {
+                cout<<(*it)<<" es punto de articulacion (criterio 2)"<<endl;
+                puntosArt.insert(*it);
+            }
+        }
 
-    set<int> visitados;
-
-    list<int>::iterator it=vertices.begin();
-
-    nodoLista arbolDescubrimiento[grafo.devolver_longitud()];
-
-
-    visitados.insert(fuente); //Marco como visitado
-    arbolDescubrimiento[indice].vertice=fuente;
-    arbolDescubrimiento[indice].numBack=std::numeric_limits<int>::max();
-    if (adyacentes.empty()==true)
-        arbolDescubrimiento[indice].es_hoja=true;
-    else{
-        arbolDescubrimiento[indice].es_hoja=false;
-        dfsArticulado(grafo,fuente,indice++,arbolDescubrimiento,visitados,raiz);
-
+        it++;
     }
-    min_bajo(grafo,raiz,arbolDescubrimiento);
 }
 
 
-template <typename C> void min_bajo(const Grafo<C> & grafo,int raiz, nodoLista arbolDescubrimiento[] ){
+template <typename C> void dfsArticulado(const Grafo<C> & grafo,int u,set<int> & visitados, set<int> & finalizados, int & time, int discover[], int finish[], int backs[], int bajo[], int padre[])
+{
+    /// u vertice en cuestion
 
-    int bajo;
-    for (int i=grafo.devolver_longitud();i>=0;i--){
-        if (arbolDescubrimiento[i].es_hoja)
-            arbolDescubrimiento[i].bajo_hijos=std::numeric_limits<int>::max();
-        else{
-            arbolDescubrimiento[i].bajo_hijos=bajo;
-            bajo=std::min(min(i,arbolDescubrimiento[i].numBack),arbolDescubrimiento[i].bajo_hijos);
-        }
-    }
-    if (raiz>=2)
-        cout<<"Punto de Articulacion: "<<arbolDescubrimiento[0].vertice;
-    for (int i=1;i<=grafo.devolver_longitud();i++)
-        if (arbolDescubrimiento[i].bajo_hijos>=i)
-         cout<<"Punto de Articulacion: "<<arbolDescubrimiento[i].vertice;
-
-};
-
-
-template <typename C> void dfsArticulado(const Grafo<C> & grafo,int fuente,int indice,nodoLista arbolDescubrimiento[],set<int> & visitados, int raiz){
+    time++;
+    discover[u]=time;
+    visitados.insert(u);
 
     list<typename Grafo<C>::Arco> adyacentes;
-    grafo.devolver_adyacentes(fuente,adyacentes);
+    grafo.devolver_adyacentes(u,adyacentes);
 
     typename list<typename Grafo<C>::Arco>::iterator it=adyacentes.begin();
-    typename list<typename Grafo<C>::Arco>::iterator itas=adyacentes.begin();
-    while (itas!=adyacentes.end()){
-        cout<<((*itas).devolver_adyacente())<<" , ";
-        itas++;
-    }
-        cout<<endl;
-        cout<<endl;
-        cout<<endl;
-        cout<<endl;
-     while (it != adyacentes.end()){ ///Para todos sus adyacentes
-        if (visitados.find((*it).devolver_adyacente())==visitados.end()){ /// Si no esta visitado
-                indice++;
-                arbolDescubrimiento[indice].vertice=((*it).devolver_adyacente());
-                arbolDescubrimiento[indice].numBack=std::numeric_limits<int>::max();
-                arbolDescubrimiento[indice].es_hoja=false; /// no es hoja
-                visitados.insert((*it).devolver_adyacente()); //Marco como visitados
-                dfsArticulado(grafo,(*it).devolver_adyacente(),indice,arbolDescubrimiento,visitados,raiz);
+
+    while (it != adyacentes.end())  /// para todos los adyacentes de u
+    {
+        if (visitados.find((*it).devolver_adyacente()) == visitados.end())  /// si no esta visitado
+        {
+            padre[(*it).devolver_adyacente()]=u;
+            dfsArticulado(grafo,(*it).devolver_adyacente(),visitados,finalizados,time,discover,finish,backs,bajo,padre);
         }
-        else{ /// si esta visitado (arco back)
-            for (int i=0;i<grafo.devolver_longitud();i++){ ///busca el num(back)
-                if (arbolDescubrimiento[i].vertice == (*it).devolver_adyacente())
-                    arbolDescubrimiento[indice].numBack=arbolDescubrimiento[i].vertice;
-             }
+        else
+        {
+            if ( (visitados.find((*it).devolver_adyacente()) != visitados.end()) && (finalizados.find((*it).devolver_adyacente())==finalizados.end()) ) /// si visitado pero no finalizado (arco back)
+                backs[u]=min(backs[u],discover[(*it).devolver_adyacente()]); ///comparo el nro exploracion de bajo que ya tengo, con el posible nuevo
         }
         it++;
     }
-    if (it== adyacentes.end())
-        arbolDescubrimiento[indice].es_hoja=true;
 
+    finalizados.insert(u);
 
+    time++;
+    finish[u]=time;
+
+    bajo[u]=min(discover[u],min(backs[u],bajo[u]));
 }
 
-
-
-
-template <typename C> void BFS(const Grafo<C> & grafo, int fuente){
+template <typename C> void BFS(const Grafo<C> & grafo, int fuente)
+{
     ///lista para ir guardando el recorrido final
     list<int> recorrido;
 
@@ -283,7 +297,8 @@ template <typename C> void BFS(const Grafo<C> & grafo, int fuente){
 
     list<typename Grafo<C>::Arco> adyacentesDeU;
 
-    while (!fila.empty()){
+    while (!fila.empty())
+    {
         int u = fila.front(); ///obtengo el primero de la fila
         fila.pop(); ///lo borro de ella
 
@@ -292,8 +307,10 @@ template <typename C> void BFS(const Grafo<C> & grafo, int fuente){
 
         ///Para los que no esten visitados, los marco como visitados y los encolo
         typename list<typename Grafo<C>::Arco>::iterator it = adyacentesDeU.begin(); ///iterador para moverme por todos los adyacentes de u
-        while (it != adyacentesDeU.end()){
-            if (visitados.find((*it).devolver_adyacente())==visitados.end()){ ///si no esta visitado
+        while (it != adyacentesDeU.end())
+        {
+            if (visitados.find((*it).devolver_adyacente())==visitados.end())  ///si no esta visitado
+            {
                 visitados.insert((*it).devolver_adyacente());
                 fila.push((*it).devolver_adyacente());
             }
@@ -306,7 +323,8 @@ template <typename C> void BFS(const Grafo<C> & grafo, int fuente){
 
     cout<<"Recorrido BFS:"<<endl;
     list<int>::iterator iterador = recorrido.begin();
-    while (iterador != recorrido.end()){
+    while (iterador != recorrido.end())
+    {
         cout<<*iterador<<" ";
         iterador++;
     }
@@ -320,7 +338,7 @@ template <typename C> void BFS(const Grafo<C> & grafo, int fuente){
 int main(int argc, char **argv)
 {
 
-	Grafo<int> grafo;
+    Grafo<int> grafo;
 
     grafo.agregar_vertice(1);
     grafo.agregar_vertice(2);
@@ -345,9 +363,9 @@ int main(int argc, char **argv)
     grafo.agregar_arco(8,9,89);
     grafo.agregar_arco(9,3,93);
 
-    /* DFS_forest(grafo,1); */
+    //DFS_forest(grafo,1);
 
     puntoArticulado(grafo,1);
 
-	return 0;
+    return 0;
 }
